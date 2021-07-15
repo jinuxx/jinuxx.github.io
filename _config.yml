@@ -3,17 +3,17 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ''
+title: Nevermind
+subtitle: "Tonight I'm a rock'n roll star"
 description: ''
 keywords:
-author: John Doe
+author: Jinuxx
 language: zh-CN
-timezone: ''
+timezone: 'Asia/Shanghai'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://example.com
+url: https://acquiesce.highflyingbird.ink/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -105,4 +105,4 @@ deploy:
   type: git
   repo: https://github.com.cnpmjs.org/jinuxx/jinuxx.github.io
   branch: gh-pages
-  message: msg
+  message: update
