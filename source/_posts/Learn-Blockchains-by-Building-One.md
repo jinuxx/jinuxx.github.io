@@ -20,6 +20,7 @@ The fastest way to learn how Blockchains work is to build one
 > pip install Flask==0.12.2 requests\==2.18.4
 
 **最终代码：** [github](https://github.com/dvf/blockchain)
+<!-- more -->
 
 ## 第一步：创建一个区块链
 
