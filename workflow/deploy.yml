@@ -1,0 +1,27 @@
+name: GitHub Actions Build and Deploy
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 1. git checkout...
+      uses: actions/checkout@v1
+
+    - name: 2. setup nodejs...
+      uses: actions/setup-node@v1
+      
+    - name: 3. install hexo...
+      run: |
+        npm install hexo-cli -g
+        git clone https://github.com/jinuxx/hexo-theme-next themes/next
+        npm install
+
+    - name: 4. hexo generate public files...
+
+      run: |
+        hexo clean
+        hexo g
