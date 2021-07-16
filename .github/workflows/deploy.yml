@@ -27,7 +27,7 @@ jobs:
         hexo clean
         hexo g
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@master
     - name: 5. Build and Deploy
       uses: y4code/hexo-deploy-action@master
       env:
