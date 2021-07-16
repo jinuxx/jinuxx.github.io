@@ -8,6 +8,15 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@master
+    - name: 5. Build and Deploy
+      uses: y4code/hexo-deploy-action@master
+      env:
+        PERSONAL_TOKEN: ${{ secrets.AccessToken }}
+        PUBLISH_REPOSITORY: jinuxx/jinuxx.github.io
+        BRANCH: gh-pages
+        PUBLISH_DIR: ./public
+
     - name: 1. git checkout...
       uses: actions/checkout@v1
 
@@ -26,12 +35,3 @@ jobs:
       run: |
         hexo clean
         hexo g
-
-    - uses: actions/checkout@master
-    - name: 5. Build and Deploy
-      uses: y4code/hexo-deploy-action@master
-      env:
-        PERSONAL_TOKEN: ${{ secrets.AccessToken }}
-        PUBLISH_REPOSITORY: jinuxx/jinuxx.github.io
-        BRANCH: gh-pages
-        PUBLISH_DIR: ./public
