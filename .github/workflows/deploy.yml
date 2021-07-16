@@ -23,8 +23,14 @@ jobs:
         npm install
 
     - name: 4. hexo generate public files...
-
       run: |
         hexo clean
         hexo g
-        hexo d
+
+    - name: Build and Deploy
+      uses: y4code/hexo-deploy-action@master
+      env:
+        PERSONAL_TOKEN: ${{ secrets.AccessToken }}
+        PUBLISH_REPOSITORY: jinuxx/jinuxx.github.io
+        BRANCH: gh-pages
+        PUBLISH_DIR: ./public # The folder the action should deploy.
