@@ -27,10 +27,11 @@ jobs:
         hexo clean
         hexo g
 
-    - name: Build and Deploy
+    - uses: actions/checkout@v2
+    - name: 5. Build and Deploy
       uses: y4code/hexo-deploy-action@master
       env:
         PERSONAL_TOKEN: ${{ secrets.AccessToken }}
         PUBLISH_REPOSITORY: jinuxx/jinuxx.github.io
         BRANCH: gh-pages
-        PUBLISH_DIR: ./public # The folder the action should deploy.
+        PUBLISH_DIR: ./public
