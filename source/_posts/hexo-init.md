@@ -16,14 +16,14 @@ date: 2021-07-15 16:44:59
 ### 使用 hexo next 主题
 ```sh
 $ cd your-hexo-site
-$ git clone https://github.com/theme-next/hexo-theme-next themes/next # 注意这个文件路径，不要多层嵌套了
+$ git clone https://github.com.cnpmjs.org/theme-next/hexo-theme-next themes/next # 注意这个文件路径，不要多层嵌套了
 ```
 修改 `_config.yml` 文件
 ```yml
 language: zh-CN # 中文
 theme: next # 主题为 next
 ```
-其他配置自行修改
+其他配置自行修改，相关文档：[iissnan](http://theme-next.iissnan.com/)
 
 ### hexo 启动本地环境测试
 > hexo s [--debug]
