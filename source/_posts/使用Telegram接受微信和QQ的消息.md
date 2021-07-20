@@ -4,6 +4,7 @@ date: 2021-07-20 09:21:31
 tags: 瞎搞
 ---
 **暂时放弃了吧，似乎微信团队又做了什么奇怪的东西导致又失效了**
+
 虽然现在手机内存够大够用，但对于微信常驻内存这件事也是颇有微词。前几天接触到 [ehForwarderBot](https://github.com/ehForwarderBot) 这个项目，应该是转发微信的消息到TG，并且能够回复。大致浏览了一下，应该是基于网页微信的接口，但是网页微信新的微信号已经不能登录了：
 ```
 <error><ret>1203</ret><message>为了你的帐号安全，此微信号已不允许登录网页微信。你可以使用Windows微信或Mac微信在电脑端登录。Windows微信下载地址：https://pc.weixin.qq.com  Mac微信下载地址：https://mac.weixin.qq.com</message></error>

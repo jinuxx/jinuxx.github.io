@@ -1,9 +1,7 @@
 ---
 title: hexo init
 tags: hexo
-categories:
-  - code
-  - other
+categories: [code, other]
 date: 2021-07-15 16:44:59
 ---
 ## hexo next 创建记录
