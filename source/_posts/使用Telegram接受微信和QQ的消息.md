@@ -3,12 +3,12 @@ title: 使用Telegram接受微信和QQ的消息
 date: 2021-07-20 09:21:31
 tags: 瞎搞
 ---
-就算是瞎搞吧
-
+**暂时放弃了吧，似乎微信团队又做了什么奇怪的东西导致又失效了**
 虽然现在手机内存够大够用，但对于微信常驻内存这件事也是颇有微词。前几天接触到 [ehForwarderBot](https://github.com/ehForwarderBot) 这个项目，应该是转发微信的消息到TG，并且能够回复。大致浏览了一下，应该是基于网页微信的接口，但是网页微信新的微信号已经不能登录了：
 ```
 <error><ret>1203</ret><message>为了你的帐号安全，此微信号已不允许登录网页微信。你可以使用Windows微信或Mac微信在电脑端登录。Windows微信下载地址：https://pc.weixin.qq.com  Mac微信下载地址：https://mac.weixin.qq.com</message></error>
 ```
+<!-- more -->
 微信团队为了适配 [统信UOS](https://www.chinauos.com/) 系统，在 Electron 中嵌套了一个微信网页版，但是这个网页版是能够登录的，好像是添加了一个请求头信息: [wechaty-puppet-wechat:127](https://github.com/wechaty/wechaty-puppet-wechat/issues/127)
 ```python
 UOS_PATCH_CLIENT_VERSION = '2.0.0'
@@ -20,7 +20,6 @@ headers = {
   'referer' : 'https://wx.qq.com/?&lang=zh_CN&target=t'
 }
 ```
-<!-- more -->
 这样的话，最初想用微信作为通知机器人的想法似乎也可以实现了 [ItChat](https://github.com/luvletter2333/ItChat)。
 
 继续 EFB 的功能，发现TG需要一直科学上网
