@@ -4,7 +4,9 @@ date: 2021-07-16 22:20:28
 tags: 
   - blockchain
   - 翻译
-categories: other
+categories:
+  - code
+  - other
 ---
 # **[Learn Blockchains by Building One](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46)**
 The fastest way to learn how Blockchains work is to build one

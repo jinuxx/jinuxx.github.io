@@ -1,7 +1,7 @@
 ---
 title: 使用frp和openvpn搭建内网vpn
 date: 2021-07-21 10:44:53
-tags:
+tags: devops
 ---
 为了满足有时需要在家办公的需求，而且公司没有固定IP，只能出此下策。
 
