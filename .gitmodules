@@ -1,0 +1,5 @@
+[submodule "themes/next"]
+	path = themes/next
+	url = git@github.com:jinuxx/hexo-theme-next.git
+	branch = master
+	shallow = true
