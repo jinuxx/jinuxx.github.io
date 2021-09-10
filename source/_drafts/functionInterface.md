@@ -1,0 +1,4 @@
+---
+title: functionInterface
+tags:
+---
