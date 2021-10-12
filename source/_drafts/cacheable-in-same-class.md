@@ -1,5 +1,5 @@
 ---
-title: @cacheable注解方法在同一个类中被调用
+title: cacheable注解方法在同一个类中被调用
 tags:
 ---
 
