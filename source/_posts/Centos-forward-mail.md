@@ -1,7 +1,9 @@
 ---
 title: Centos转发系统邮件
 date: 2021-08-27 14:36:41
-tags: devops, centos
+tags: 
+  - devops
+  - centos
 ---
 > You have new mail.
 

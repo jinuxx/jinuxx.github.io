@@ -1,7 +1,9 @@
 ---
 title: docker-init
 date: 2021-07-22 14:36:01
-tags: docker, devops
+tags: 
+  - docker
+  - devops
 ---
 
 ## docker

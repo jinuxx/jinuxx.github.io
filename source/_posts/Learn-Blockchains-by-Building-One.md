@@ -3,7 +3,7 @@ title: Learn Blockchains by Building One
 date: 2021-07-16 22:20:28
 tags: 
   - blockchain
-  - 翻译
+  - translate
 categories:
   - code
   - other
