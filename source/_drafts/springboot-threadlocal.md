@@ -1,4 +1,0 @@
----
-title: springboot threadlocal
-tags:
----
