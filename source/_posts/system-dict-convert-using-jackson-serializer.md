@@ -14,7 +14,7 @@ date: 2021-10-12 16:06:32
 ```java
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@JacksonAnnotationsInside // 注意这个注解，声明之后下一行的注解才会生肖
+@JacksonAnnotationsInside // 注意这个注解，声明之后下一行的注解才会生效
 @JsonSerialize(using = DictSerializer.class)
 public @interface Dict {
 
