@@ -43,5 +43,5 @@ shc Usage: shc [-e date] [-m addr] [-i iopt] [-x cmnd] [-l lopt] [-o outfile] [-
 会生成两个文件 `*.sh.x` 和 `*.sh.x.c`
 
 `*.sh.x.c` 是脚本源文件，可以删除。
-`*.sh.x` 是加密的可执行文件，课改明后运行。
+`*.sh.x` 是加密的可执行文件，修改名称后运行。
 
