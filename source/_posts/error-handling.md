@@ -34,6 +34,7 @@ public class ExceptionAdviceHandler {
     // ...
 }
 ```
+<!-- more -->
 但是有时候，在 `Filter` 或者 `Interceptor` 中，也会有错误抛出，这些错误就不能被捕获了。这时候可以用自定义的 `Filter` 去 `try-cache`
 
 ```java

@@ -31,12 +31,28 @@ theme: next # 主题为 next
 访问 [http://localhost:4000](http://localhost:4000)
 
 ### hexo 编写文章
-> hexo new [post | draft | page] "post name"
+> hexo new [layout] \"\<title>\"
 
 如果只是需要展示顶部，在分割的地方添加 `<!--more-->`
 
+这里默认的 `layout` 是 `_config.yml` 中的 `default_layout` 参数  
+`draft` 草稿完成后，可以通过以下命令来发布
+> hexo publish \"\<title>\"
+
+在 hexo 中，特殊符号的渲染总是会出现特殊问题，因此对于特殊符号最好使用转义过后的符号，或者添加转义符 `\`
+
+符号|转义
+-|-
+\"|&quot\;
+\'|&apos\;
+
+
+
 ### hexo 发布
-发布至 `github-page`，需要插件 `hexo-deployer-git`
+可以通过两种方式进行发布，这里使用了第一种方式:
+1. 使用 `github-Actions`，只要提交文件，`Actions` 会自动发布。
+
+2. 发布至 `github-page`，需要插件 `hexo-deployer-git`
 ```sh
 $ npm install hexo-deployer-git --save
 ```
