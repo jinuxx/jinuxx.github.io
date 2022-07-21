@@ -72,7 +72,7 @@ public class NotLoginFilter extends OncePerRequestFilter {
     "path": "/unknown"
 }
 ```
-现在想要统一返回值，需要配置 `application.properties`，并且不使用 `@EnableWebMvc`([stackoverflow](https://stackoverflow.com/questions/30917782/spring-boot-404-error-custom-error-response-rest?answertab=active#tab-top)):
+现在想要统一返回值，需要配置 `application.properties`。~~并且不使用 `@EnableWebMvc`([stackoverflow](https://stackoverflow.com/questions/30917782/spring-boot-404-error-custom-error-response-rest?answertab=active#tab-top))，与 `ResponseBodyAdvice` 配置有冲突？TODO~~:
 
 ```properties
 spring.mvc.throw-exception-if-no-handler-found=true
