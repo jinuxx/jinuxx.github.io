@@ -1,6 +1,6 @@
 ---
-title: springboot threadlocal
-tags: java
+title: Spring Boot 中 Threadlocal 问题
+tags: Java
 date: 2021-10-14 15:58:01
 ---
 

@@ -1,4 +1,0 @@
----
-title: inner class
-tags:
----

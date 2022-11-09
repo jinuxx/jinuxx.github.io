@@ -8,7 +8,7 @@ categories:
   - code
   - other
 ---
-# **[Learn Blockchains by Building One](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46)**
+**[原文链接 Learn Blockchains by Building One](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46)**
 The fastest way to learn how Blockchains work is to build one
 
 

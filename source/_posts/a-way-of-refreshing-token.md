@@ -1,10 +1,10 @@
 ---
 title: 一种刷新token的方式
 date: 2021-07-30 09:08:37
-tags: java
+tags: Java
 ---
 
-在调用第三方接口时，需要带Token进行验证是很常见的做法，像企业微信/公众号之类，需要先获取access_token，在之后的接口调用中，需要bear这个token，进行调用，下图为[公众号access_token](https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Get_access_token.html)说明
+在调用第三方接口时，需要带Token进行验证是很常见的做法，像企业微信/公众号之类，需要先获取access_token，在之后的接口调用中，需要bearer这个token，进行调用，下图为[公众号access_token](https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Get_access_token.html)说明
 ![](wechat_access_token.jpg)
 一般在分布式环境下，或者多人开发时，使用数据库或者redis来保存，防止出现多次获取，导致服务器不稳定。
 <!-- more -->

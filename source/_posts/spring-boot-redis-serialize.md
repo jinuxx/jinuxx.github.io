@@ -1,7 +1,7 @@
 ---
-title: SpringBoot 中 RedisTemplate 序列化问题若干
+title: Spring Boot 中 RedisTemplate 序列化问题若干
 tags:
-  - spring boot
+  - Spring Boot
   - redis
   - 序列化
 date: 2022-07-11 17:15:16
@@ -60,7 +60,7 @@ public class StringRedisTemplate extends RedisTemplate<String, String> {
 ```
 但是在操作特殊的值时（即 `RedisTemplate<Object, Object>`），会有一些特殊的问题。
 
-`RedisTemplate` 默认序列化工具为 `JdkSerializationRedisSerializer`，会将所有的key和value转换为二进制，而且对于需要序列化的类，要实现接口 `Serializable`，才能被正确的序列化。如果不关心在 `redis` 中存储的内容（无需查看等），那么其他配置可能使用默认。
+`RedisTemplate` 默认序列化工具为 `JdkSerializationRedisSerializer`，会将所有的key和value转换为二进制，而且对于需要序列化的类，要实现接口 `Serializable`，才能被正确的序列化。如果不关心在 `redis` 中存储的内容（无需查看等），那么其他配置可以使用默认。
 
 如果需要经常查看甚至修改 `redis` 的内容，就需要配置 `redisTemplate`。
 ```java

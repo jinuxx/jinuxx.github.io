@@ -1,9 +1,9 @@
 ---
-title: springboot 全局错误处理
+title: Spring Boot 全局错误处理
 date: 2021-10-14 14:49:49
-tags: java
+tags: Java
 ---
-我们一般用 `[Rest]ControllerAdvice` 来做 `Controller` 的全局错误处理，比如在项目中：
+我们一般用 `@[Rest]ControllerAdvice` 来做 `Controller` 的全局错误处理，比如在项目中：
 ```java
 /**
  * 全局异常处理，需要自定义异常处理的
@@ -35,7 +35,7 @@ public class ExceptionAdviceHandler {
 }
 ```
 <!-- more -->
-但是有时候，在 `Filter` 或者 `Interceptor` 中，也会有错误抛出，这些错误就不能被捕获了。这时候可以用自定义的 `Filter` 去 `try-cache`
+但是有时候，在 `Filter` 或者 `Interceptor` 中，也会有错误抛出，这些错误就不能被捕获了。这时候可以用自定义的 `Filter` 去 `try-catch`
 
 ```java
 // 在使用 SaToke 时，验证是否登录是通过 Interceptor 进行的，因此在这里捕获未登录的错误

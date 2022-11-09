@@ -1,6 +1,6 @@
 ---
 title: 使用 Jackson 的 Serializer 进行系统字典翻译
-tags: java
+tags: Java
 date: 2021-10-12 16:06:32
 ---
 
