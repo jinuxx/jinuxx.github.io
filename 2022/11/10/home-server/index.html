@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/highflyingbird-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/highflyingbird-16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"acquiesce.highflyingbird.ink","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一直一来都在瞎搞的一个家用下载机  r2s firmware qbittorrent 4.3.9_libtorrent1.2.15 flexget 这个在腾讯轻量云上 smb mdadm&#x2F;btrfs&#x2F;zfs…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="家里网络环境&#x2F;下载机">
+<meta property="og:url" content="https://acquiesce.highflyingbird.ink/2022/11/10/home-server/index.html">
+<meta property="og:site_name" content="Nevermind">
+<meta property="og:description" content="一直一来都在瞎搞的一个家用下载机  r2s firmware qbittorrent 4.3.9_libtorrent1.2.15 flexget 这个在腾讯轻量云上 smb mdadm&#x2F;btrfs&#x2F;zfs…">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://acquiesce.highflyingbird.ink/2022/11/10/home-server/board_1.jpg">
+<meta property="og:image" content="https://acquiesce.highflyingbird.ink/2022/11/10/home-server/board_2.jpg">
+<meta property="article:published_time" content="2022-11-10T03:00:18.000Z">
+<meta property="article:modified_time" content="2022-11-10T11:41:34.972Z">
+<meta property="article:author" content="Jinuxx">
+<meta property="article:tag" content="瞎搞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://acquiesce.highflyingbird.ink/2022/11/10/home-server/board_1.jpg">
+
+
+<link rel="canonical" href="https://acquiesce.highflyingbird.ink/2022/11/10/home-server/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://acquiesce.highflyingbird.ink/2022/11/10/home-server/","path":"2022/11/10/home-server/","title":"家里网络环境/下载机"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>家里网络环境/下载机 | Nevermind</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Nevermind</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Tonight I'm a rock'n roll star</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">硬件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#qbittorrent"><span class="nav-number">2.</span> <span class="nav-text">qbittorrent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smb"><span class="nav-number">3.</span> <span class="nav-text">smb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mdadm"><span class="nav-number">4.</span> <span class="nav-text">mdadm</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jinuxx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://acquiesce.highflyingbird.ink/2022/11/10/home-server/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jinuxx">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nevermind">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="家里网络环境/下载机 | Nevermind">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          家里网络环境/下载机
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-11-10 11:00:18 / 修改时间：19:41:34" itemprop="dateCreated datePublished" datetime="2022-11-10T11:00:18+08:00">2022-11-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>一直一来都在瞎搞的一个家用下载机</p>
+<ul>
+<li>r2s <a target="_blank" rel="noopener" href="https://github.com/DHDAXCW/NanoPi-R2S-rk3328">firmware</a></li>
+<li>qbittorrent <a target="_blank" rel="noopener" href="https://github.com/userdocs/qbittorrent-nox-static/releases/tag/release-4.3.9_v1.2.15">4.3.9_libtorrent1.2.15</a></li>
+<li><a target="_blank" rel="noopener" href="https://flexget.com/">flexget</a> 这个在腾讯轻量云上</li>
+<li>smb</li>
+<li><a target="_blank" rel="noopener" href="https://wiki.debian.org/SoftwareRAID">mdadm</a>&#x2F;<a target="_blank" rel="noopener" href="https://wiki.debian.org/Btrfs">btrfs</a>&#x2F;<a target="_blank" rel="noopener" href="https://wiki.debian.org/ZFS">zfs</a><br>…  <span id="more"></span></li>
+</ul>
+<h2 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h2><p>现在用的是一块 DC 供电的 J1900 板子，只有一个 SATA 接口，一个磁盘供电（PH2.0），有两个 minipcie，2个 usb3.0(但只有下面的口插上后显示3.0)，2个 usb2.0，其他什么都没有了<br><img src="/2022/11/10/home-server/board_1.jpg" alt="板子_1"><br><img src="/2022/11/10/home-server/board_2.jpg" alt="板子_2"></p>
+<p>现在有3块硬盘：1.8T的移动硬盘（2*WD, 1*TOSHIBA，拆开发现全部都是焊死的特殊接口），其中WD一块有问题，好像坏道特别多。还有一个 120G 的固态，现在系统安装：</p>
+<ol>
+<li>128G 固态作为系统盘，装 Debian 系统，插在一个 USB2.0上 – 应该不需要速度吧，只要系统加载完就结束了</li>
+<li>1.8T TOSHIBA 插在 USB3.0上</li>
+<li><del>1.8T WD 拆开插在 SATA 上</del></li>
+<li><del>1.8T WD (坏) 备用吧…</del></li>
+</ol>
+<h2 id="qbittorrent"><a href="#qbittorrent" class="headerlink" title="qbittorrent"></a>qbittorrent</h2><p>自启动：<br><code>vim /etc/systemd/system/qbittorrent-nox.service</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=qBittorrent-nox</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">User=root</span><br><span class="line">Type=forking</span><br><span class="line">RemainAfterExit=yes</span><br><span class="line">ExecStart=/usr/bin/qbittorrent-nox -d --webui-port=8083</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p><code>qbit_log.sh</code>:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -50f /root/.local/share/qBittorrent/logs/qbittorrent.log</span><br></pre></td></tr></table></figure>
+<p><code>torrent_finished.sh</code>:<br>这个需要配置 qbittorrent： 设置 - 下载 - Torrent 完成时运行外部程序</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">! /bin/bash</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">/root/torrent_finished.sh <span class="string">&quot;%N&quot;</span> <span class="string">&quot;%C&quot;</span> <span class="string">&quot;%Z&quot;</span> <span class="string">&quot;%F&quot;</span> <span class="string">&quot;%L&quot;</span></span></span><br><span class="line"></span><br><span class="line">torrent_name=$1</span><br><span class="line">total_files=$2</span><br><span class="line">size_bytes=$3</span><br><span class="line">content_path=$4</span><br><span class="line">category=$5</span><br><span class="line"></span><br><span class="line">/usr/bin/curl -H &quot;Content-Type: application/json&quot; \</span><br><span class="line">    -d &quot;&#123;\&quot;torrent_name\&quot;:\&quot;$torrent_name\&quot;,\&quot;category\&quot;:\&quot;$&#123;category:=?&#125;\&quot;,\&quot;content_path\&quot;:\&quot;$content_path\&quot;,\&quot;total_files\&quot;:$total_files,\&quot;size_bytes\&quot;:$size_bytes&#125;&quot; \</span><br><span class="line">    -X POST $YOUR_NOTIFY_API</span><br></pre></td></tr></table></figure>
+
+<h2 id="smb"><a href="#smb" class="headerlink" title="smb"></a>smb</h2><p><code>apt install samba</code><br><code>vim /etc/samba/smb.conf</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line">       workgroup = WORKGROUP</span><br><span class="line">       security = share</span><br><span class="line">       map to guest = Bad User</span><br><span class="line">[tank]</span><br><span class="line">       comment = resources</span><br><span class="line">       path = /tank</span><br><span class="line">       public = yes</span><br><span class="line">       writable = yes</span><br><span class="line">       guest ok = yes</span><br><span class="line">       browseable = yes</span><br><span class="line">[save]</span><br><span class="line">       comment = resources</span><br><span class="line">       path = /mnt</span><br><span class="line">       public = yes</span><br><span class="line">       writable = yes</span><br><span class="line">       guest ok = yes</span><br><span class="line">       browseable = yes</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="mdadm"><a href="#mdadm" class="headerlink" title="mdadm"></a>mdadm</h2><ol>
+<li>create raid 0<br><code>mdadm --create --verbose /dev/md0 --level=0 --raid-devices=2 /dev/sdb1 /dev/sdc1</code></li>
+<li>create filesystem<br><code>mkfs.ext4 /dev/md0</code></li>
+<li>auto mount <code>vim /etc/fstab</code><br><code>UUID=d160dd45-bf3c-4953-83c2-5093192cad7d /tank           ext4    defaults        0       2</code></li>
+<li>Persist the array configuration to mdadm.conf<br><code>mdadm --detail --scan --verbose | sudo tee -a /etc/mdadm/mdadm.conf</code></li>
+</ol>
+<p>delete a mdadm</p>
+<ol>
+<li><code>umount /dev/md0</code></li>
+<li><code>mdadm --stop /dev/md0</code></li>
+<li><code>mdadm --misc --zero-superblock /dev/sd[?]</code></li>
+<li><code>rm -rf /etc/mdadm/mdadm.conf</code></li>
+<li>清除 <code>/etc/fstab</code> 中挂载的部分</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9E%8E%E6%90%9E/" rel="tag"># 瞎搞</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/09/spring-boot-unit-test/" rel="prev" title="Spring Boot 下的单元测试">
+                  <i class="fa fa-chevron-left"></i> Spring Boot 下的单元测试
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-gamepad"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jinuxx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

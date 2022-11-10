@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/highflyingbird-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/highflyingbird-16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"acquiesce.highflyingbird.ink","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Spring Boot (2.5.14) 默认使用的是 Jackson 来做序列化操作，在使用 redis stream 的过程中，暴露出了一些问题，遂做整理。   StringRedisTemplate 和 RedisTemplatespring-boot-starter-data-redis 默认注入了两个 bean: 1234567891011121314151617181920212223">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot 中 RedisTemplate 序列化问题若干">
+<meta property="og:url" content="https://acquiesce.highflyingbird.ink/2022/07/11/spring-boot-redis-serialize/index.html">
+<meta property="og:site_name" content="Nevermind">
+<meta property="og:description" content="Spring Boot (2.5.14) 默认使用的是 Jackson 来做序列化操作，在使用 redis stream 的过程中，暴露出了一些问题，遂做整理。   StringRedisTemplate 和 RedisTemplatespring-boot-starter-data-redis 默认注入了两个 bean: 1234567891011121314151617181920212223">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-11T09:15:16.000Z">
+<meta property="article:modified_time" content="2022-11-10T11:41:34.972Z">
+<meta property="article:author" content="Jinuxx">
+<meta property="article:tag" content="Spring Boot">
+<meta property="article:tag" content="redis">
+<meta property="article:tag" content="序列化">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://acquiesce.highflyingbird.ink/2022/07/11/spring-boot-redis-serialize/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://acquiesce.highflyingbird.ink/2022/07/11/spring-boot-redis-serialize/","path":"2022/07/11/spring-boot-redis-serialize/","title":"Spring Boot 中 RedisTemplate 序列化问题若干"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Spring Boot 中 RedisTemplate 序列化问题若干 | Nevermind</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Nevermind</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Tonight I'm a rock'n roll star</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#StringRedisTemplate-%E5%92%8C-RedisTemplate"><span class="nav-number">1.</span> <span class="nav-text">StringRedisTemplate 和 RedisTemplate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-Stream-MQ"><span class="nav-number">2.</span> <span class="nav-text">Redis Stream MQ</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jinuxx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://acquiesce.highflyingbird.ink/2022/07/11/spring-boot-redis-serialize/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jinuxx">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nevermind">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Spring Boot 中 RedisTemplate 序列化问题若干 | Nevermind">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring Boot 中 RedisTemplate 序列化问题若干
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-11 17:15:16" itemprop="dateCreated datePublished" datetime="2022-07-11T17:15:16+08:00">2022-07-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-10 19:41:34" itemprop="dateModified" datetime="2022-11-10T19:41:34+08:00">2022-11-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><code>Spring Boot (2.5.14)</code> 默认使用的是 <code>Jackson</code> 来做序列化操作，在使用 <code>redis stream</code> 的过程中，暴露出了一些问题，遂做整理。  </p>
+<h2 id="StringRedisTemplate-和-RedisTemplate"><a href="#StringRedisTemplate-和-RedisTemplate" class="headerlink" title="StringRedisTemplate 和 RedisTemplate"></a><code>StringRedisTemplate</code> 和 <code>RedisTemplate</code></h2><p><code>spring-boot-starter-data-redis</code> 默认注入了两个 <code>bean</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.springframework.boot.autoconfigure.data.redis;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration(proxyBeanMethods = false)</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(RedisOperations.class)</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties(RedisProperties.class)</span></span><br><span class="line"><span class="meta">@Import(&#123; LettuceConnectionConfiguration.class, JedisConnectionConfiguration.class &#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisAutoConfiguration</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean(name = &quot;redisTemplate&quot;)</span></span><br><span class="line">    <span class="meta">@ConditionalOnSingleCandidate(RedisConnectionFactory.class)</span></span><br><span class="line">    <span class="keyword">public</span> RedisTemplate&lt;Object, Object&gt; <span class="title function_">redisTemplate</span><span class="params">(RedisConnectionFactory redisConnectionFactory)</span> &#123;</span><br><span class="line">        RedisTemplate&lt;Object, Object&gt; template = <span class="keyword">new</span> <span class="title class_">RedisTemplate</span>&lt;&gt;();</span><br><span class="line">        template.setConnectionFactory(redisConnectionFactory);</span><br><span class="line">        <span class="keyword">return</span> template;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean</span></span><br><span class="line">    <span class="meta">@ConditionalOnSingleCandidate(RedisConnectionFactory.class)</span></span><br><span class="line">    <span class="keyword">public</span> StringRedisTemplate <span class="title function_">stringRedisTemplate</span><span class="params">(RedisConnectionFactory redisConnectionFactory)</span> &#123;</span><br><span class="line">        <span class="type">StringRedisTemplate</span> <span class="variable">template</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringRedisTemplate</span>();</span><br><span class="line">        template.setConnectionFactory(redisConnectionFactory);</span><br><span class="line">        <span class="keyword">return</span> template;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>在大部分情况下都是使用的 <code>StringRedisTemplate</code>，而且所有的序列化器都是 <code>RedisSerializer.string()</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.springframework.data.redis.core;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StringRedisTemplate</span> <span class="keyword">extends</span> <span class="title class_">RedisTemplate</span>&lt;String, String&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">StringRedisTemplate</span><span class="params">()</span> &#123;</span><br><span class="line">        setKeySerializer(RedisSerializer.string());</span><br><span class="line">        setValueSerializer(RedisSerializer.string());</span><br><span class="line">        setHashKeySerializer(RedisSerializer.string());</span><br><span class="line">        setHashValueSerializer(RedisSerializer.string());</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是在操作特殊的值时（即 <code>RedisTemplate&lt;Object, Object&gt;</code>），会有一些特殊的问题。</p>
+<p><code>RedisTemplate</code> 默认序列化工具为 <code>JdkSerializationRedisSerializer</code>，会将所有的key和value转换为二进制，而且对于需要序列化的类，要实现接口 <code>Serializable</code>，才能被正确的序列化。如果不关心在 <code>redis</code> 中存储的内容（无需查看等），那么其他配置可以使用默认。</p>
+<p>如果需要经常查看甚至修改 <code>redis</code> 的内容，就需要配置 <code>redisTemplate</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisConfig</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> RedisTemplate&lt;Object, Object&gt; redisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * &#123;<span class="doctag">@link</span> org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration#redisTemplate&#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RedisConfig</span><span class="params">(RedisTemplate&lt;Object, Object&gt; redisTemplate, ObjectMapper objectMapper)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.jsonRedisSerializer = obtainJsonRedisSerializer(objectMapper);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置redis的序列化工具</span></span><br><span class="line">        redisTemplate.setKeySerializer(RedisSerializer.string());</span><br><span class="line">        redisTemplate.setHashKeySerializer(RedisSerializer.string());</span><br><span class="line">        redisTemplate.setValueSerializer(<span class="built_in">this</span>.jsonRedisSerializer);</span><br><span class="line">        redisTemplate.setHashValueSerializer(<span class="built_in">this</span>.jsonRedisSerializer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> GenericJackson2JsonRedisSerializer <span class="title function_">obtainJsonRedisSerializer</span><span class="params">(ObjectMapper objectMapper)</span> &#123;</span><br><span class="line">        <span class="type">ObjectMapper</span> <span class="variable">objectMapperCopy</span> <span class="operator">=</span> objectMapper.copy();</span><br><span class="line">        <span class="comment">// objectMapperCopy.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);</span></span><br><span class="line">        objectMapperCopy.activateDefaultTyping(LaissezFaireSubTypeValidator.instance,</span><br><span class="line">                                               ObjectMapper.DefaultTyping.NON_FINAL,</span><br><span class="line">                                               JsonTypeInfo.As.PROPERTY</span><br><span class="line">        );</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">GenericJackson2JsonRedisSerializer</span>(objectMapperCopy);</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如以上代码所示：  </p>
+<ol>
+<li>使用 <code>Spring Boot</code> 的 <code>objectMapper</code> 做为基础配置，生成 <code>GenericJackson2JsonRedisSerializer</code><br>如果使用 <code>new ObjectMapper()</code>，会有部分模块未注册问题，如（java8的LocalDateTime, jsr310等）<br>使用 <code>objectMapper.copy()</code> 是为了防止污染原始bean</li>
+<li><code>objectMapper</code> 默认不添加类信息，当从缓存中取出进行反序列化时，<code>GenericJackson2JsonRedisSerializer</code> 不知道该反序列为什么类，因此添加这个配置，不同的配置生成不同的序列化字符串格式：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这样会作为属性添加，且属性名为 &quot;@class&quot;</span></span><br><span class="line"><span class="comment">// objectMapperCopy.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);  // 这个方法已经被弃用</span></span><br><span class="line">objectMapperCopy.activateDefaultTyping(LaissezFaireSubTypeValidator.instance,</span><br><span class="line">                                        ObjectMapper.DefaultTyping.NON_FINAL,</span><br><span class="line">                                        JsonTypeInfo.As.PROPERTY);</span><br></pre></td></tr></table></figure>
+其他格式看 <code>activateDefaultTyping</code> 的几个重载方法</li>
+</ol>
+<h2 id="Redis-Stream-MQ"><a href="#Redis-Stream-MQ" class="headerlink" title="Redis Stream MQ"></a><code>Redis Stream</code> MQ</h2><p>在使用 <code>Redis Stream</code> 做简单消息队列时，如果不关心存储的数据格式，全部使用 <code>StringRedisTemplate</code> 即可</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spring-Boot/" rel="tag"># Spring Boot</a>
+              <a href="/tags/redis/" rel="tag"># redis</a>
+              <a href="/tags/%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag"># 序列化</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/07/nginx-proxy-pass-translations/" rel="prev" title="nginx proxy_pass 与 url 路径的转换问题">
+                  <i class="fa fa-chevron-left"></i> nginx proxy_pass 与 url 路径的转换问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/08/a-windows-JAVA-HOME-problem/" rel="next" title="一个 Windows 下 JAVA_HOME 设置不生效的问题">
+                  一个 Windows 下 JAVA_HOME 设置不生效的问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-gamepad"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jinuxx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

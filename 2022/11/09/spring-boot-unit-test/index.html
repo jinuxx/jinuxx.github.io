@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/highflyingbird-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/highflyingbird-16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"acquiesce.highflyingbird.ink","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="原文链接 Unit Testing with Spring Boot   依赖 JUnit Jupiter (JUnit 5) Mockito AssertJ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot 下的单元测试">
+<meta property="og:url" content="https://acquiesce.highflyingbird.ink/2022/11/09/spring-boot-unit-test/index.html">
+<meta property="og:site_name" content="Nevermind">
+<meta property="og:description" content="原文链接 Unit Testing with Spring Boot   依赖 JUnit Jupiter (JUnit 5) Mockito AssertJ">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-09T03:16:21.000Z">
+<meta property="article:modified_time" content="2022-11-10T11:41:34.972Z">
+<meta property="article:author" content="Jinuxx">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="translate">
+<meta property="article:tag" content="Spring Boot">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://acquiesce.highflyingbird.ink/2022/11/09/spring-boot-unit-test/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://acquiesce.highflyingbird.ink/2022/11/09/spring-boot-unit-test/","path":"2022/11/09/spring-boot-unit-test/","title":"Spring Boot 下的单元测试"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Spring Boot 下的单元测试 | Nevermind</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Nevermind</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Tonight I'm a rock'n roll star</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96"><span class="nav-number">1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E5%9C%A8%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E4%B8%AD%E4%BD%BF%E7%94%A8-Spring"><span class="nav-number">2.</span> <span class="nav-text">不要在单元测试中使用 Spring</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%8F%AF%E6%B5%8B%E8%AF%95%E7%9A%84-Spring-Bean"><span class="nav-number">3.</span> <span class="nav-text">创建一个可测试的 Spring Bean</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E6%B3%A8%E5%85%A5%EF%BC%88Field-Injection%EF%BC%89%E5%B9%B6%E4%B8%8D%E5%A5%BD"><span class="nav-number">3.1.</span> <span class="nav-text">字段注入（Field Injection）并不好</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%9E%84%E9%80%A0%E5%99%A8"><span class="nav-number">3.2.</span> <span class="nav-text">使用构造器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%8F%E5%B0%91%E6%A8%A1%E6%9D%BF%E9%87%8D%E5%A4%8D%E4%BB%A3%E7%A0%81"><span class="nav-number">3.3.</span> <span class="nav-text">减少模板重复代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8-Mockito-%E6%9D%A5-mock-%E4%BE%9D%E8%B5%96"><span class="nav-number">4.</span> <span class="nav-text">用 Mockito 来 mock 依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E5%8E%9F%E7%94%9F-Mockito-%E6%9D%A5-mock-%E4%BE%9D%E8%B5%96"><span class="nav-number">4.1.</span> <span class="nav-text">用原生 Mockito 来 mock 依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8-Mock-%E6%B3%A8%E8%A7%A3%E6%9D%A5-mock-%E4%BE%9D%E8%B5%96"><span class="nav-number">4.2.</span> <span class="nav-text">用 @Mock 注解来 mock 依赖</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%AF%E8%AF%BB%E6%98%93%E8%AF%BB%E7%9A%84-Assertion"><span class="nav-number">5.</span> <span class="nav-text">使用可读易读的 Assertion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">6.</span> <span class="nav-text">结论</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jinuxx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://acquiesce.highflyingbird.ink/2022/11/09/spring-boot-unit-test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jinuxx">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nevermind">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Spring Boot 下的单元测试 | Nevermind">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring Boot 下的单元测试
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-09 11:16:21" itemprop="dateCreated datePublished" datetime="2022-11-09T11:16:21+08:00">2022-11-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-10 19:41:34" itemprop="dateModified" datetime="2022-11-10T19:41:34+08:00">2022-11-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="https://reflectoring.io/unit-testing-spring-boot/">原文链接 Unit Testing with Spring Boot</a>  </p>
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><ul>
+<li>JUnit Jupiter (JUnit 5)</li>
+<li>Mockito</li>
+<li>AssertJ</li>
+</ul>
+<span id="more"></span>
+<h2 id="不要在单元测试中使用-Spring"><a href="#不要在单元测试中使用-Spring" class="headerlink" title="不要在单元测试中使用 Spring"></a>不要在单元测试中使用 Spring</h2><p>在以下”单元”测试中，我们只想测试 <code>RegisterUseCase</code> 中的一个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ExtendWith(SpringExtension.class)</span></span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RegisterUseCaseTest</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  <span class="keyword">private</span> RegisterUseCase registerUseCase;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Test</span></span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">savedUserHasRegistrationDate</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>(<span class="string">&quot;zaphod&quot;</span>, <span class="string">&quot;zaphod@mail.com&quot;</span>);</span><br><span class="line">    <span class="type">User</span> <span class="variable">savedUser</span> <span class="operator">=</span> registerUseCase.registerUser(user);</span><br><span class="line">    assertThat(savedUser.getRegistrationDate()).isNotNull();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个测试用时4.5秒，启动了一个空的 Spring 项目。由于 <code>@SpringBootTest</code> 注解，我们启动了整个 <code>Spring Boot</code> 上下文环境，只是为了注入一个 <code>RegisterUseCase</code> 的实例而已！</p>
+<h2 id="创建一个可测试的-Spring-Bean"><a href="#创建一个可测试的-Spring-Bean" class="headerlink" title="创建一个可测试的 Spring Bean"></a>创建一个可测试的 Spring Bean</h2><p>以下手段可以让 Spring Bean 更易测试</p>
+<h3 id="字段注入（Field-Injection）并不好"><a href="#字段注入（Field-Injection）并不好" class="headerlink" title="字段注入（Field Injection）并不好"></a>字段注入（Field Injection）并不好</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RegisterUseCase</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  <span class="keyword">private</span> UserRepository userRepository;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> User <span class="title function_">registerUser</span><span class="params">(User user)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> userRepository.save(user);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的这个类没办法脱离 Spring 做单元测试，必须依赖 <code>UserRepository</code> 的实例Bean，需要用到上一节中展示的，通过 Spring 创建一个实例并且通过 <code>@Autowired</code> 来注入。</p>
+<p>这个教程教你如果不用字段注入。</p>
+<h3 id="使用构造器"><a href="#使用构造器" class="headerlink" title="使用构造器"></a>使用构造器</h3><p>不如，我们直接抛弃 <code>@Autowired</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RegisterUseCase</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> UserRepository userRepository;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">RegisterUseCase</span><span class="params">(UserRepository userRepository)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.userRepository = userRepository;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> User <span class="title function_">registerUser</span><span class="params">(User user)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> userRepository.save(user);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码使用了 <a target="_blank" rel="noopener" href="https://reflectoring.io/constructor-injection/">构造器注入</a> 进行依赖注入，在创建上下文环境时 Spring 会自动实例化一个<code>UserRepository</code>，在 Spring5 之前，还是需要添加 <code>@Autowired</code> 让 Spring 找到构造器。</p>
+<p>同时，<code>UserRepository</code> 现在也是 <code>final</code> 的了，因为在整个 Spring 的生命周期里，这个实例不会再变化，同时也避免了一些其他错误。</p>
+<h3 id="减少模板重复代码"><a href="#减少模板重复代码" class="headerlink" title="减少模板重复代码"></a>减少模板重复代码</h3><p>充分利用 <code>Lombok</code> 的 <a target="_blank" rel="noopener" href="https://projectlombok.org/features/constructor"><code>@RequiredArgsConstructor</code></a> 自动生成构造器：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@RequiredArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RegisterUseCase</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> UserRepository userRepository;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> User <span class="title function_">registerUser</span><span class="params">(User user)</span> &#123;</span><br><span class="line">    user.setRegistrationDate(LocalDateTime.now());</span><br><span class="line">    <span class="keyword">return</span> userRepository.save(user);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在这个类已经没有什么模板性的代码了，非常简洁而且可以通过简单的 Java 代码来实例化并测试：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RegisterUseCaseTest</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="type">UserRepository</span> <span class="variable">userRepository</span> <span class="operator">=</span> ...;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> RegisterUseCase registerUseCase;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@BeforeEach</span></span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">initUseCase</span><span class="params">()</span> &#123;</span><br><span class="line">    registerUseCase = <span class="keyword">new</span> <span class="title class_">RegisterUseCase</span>(userRepository);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Test</span></span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">savedUserHasRegistrationDate</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>(<span class="string">&quot;zaphod&quot;</span>, <span class="string">&quot;zaphod@mail.com&quot;</span>);</span><br><span class="line">    <span class="type">User</span> <span class="variable">savedUser</span> <span class="operator">=</span> registerUseCase.registerUser(user);</span><br><span class="line">    assertThat(savedUser.getRegistrationDate()).isNotNull();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还有一个片段没有实现，我们可以通过 mock <code>UserRepository</code> 来解决这个依赖问题，毕竟我们测试时是不会用真的实例的。</p>
+<h2 id="用-Mockito-来-mock-依赖"><a href="#用-Mockito-来-mock-依赖" class="headerlink" title="用 Mockito 来 mock 依赖"></a>用 <code>Mockito</code> 来 mock 依赖</h2><p><a target="_blank" rel="noopener" href="https://site.mockito.org/"><code>Mockito</code></a> 是现在比较常用的 mock库，它提供了两种 mock 的方法：</p>
+<h3 id="用原生-Mockito-来-mock-依赖"><a href="#用原生-Mockito-来-mock-依赖" class="headerlink" title="用原生 Mockito 来 mock 依赖"></a>用原生 <code>Mockito</code> 来 mock 依赖</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">UserRepository</span> <span class="variable">userRepository</span> <span class="operator">=</span> Mockito.mock(UserRepository.class);</span><br></pre></td></tr></table></figure>
+<p>这样一个<code>UserRepository</code>实例就会被创建出来。默认情况下，所有的方法调用什么都不会做，如果调用的方法有返回值的话，会返回 <code>null</code>。</p>
+<p>我们的测试在 <code>assertThat(savedUser.getRegistrationDate()).isNotNull();</code> 这一行会报错，因为 <code>savedUser</code> 是一个 <code>null</code>，现在我们需要告诉 <code>Mockito</code> 在调用 <code>registerUseCase.registerUser()</code> 时要返回点东西。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">savedUserHasRegistrationDate</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>(<span class="string">&quot;zaphod&quot;</span>, <span class="string">&quot;zaphod@mail.com&quot;</span>);</span><br><span class="line">  when(userRepository.save(any(User.class))).then(returnsFirstArg());</span><br><span class="line">  <span class="type">User</span> <span class="variable">savedUser</span> <span class="operator">=</span> registerUseCase.registerUser(user);</span><br><span class="line">  assertThat(savedUser.getRegistrationDate()).isNotNull();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码中，<code>userRepository.save()</code> 会返回第一个入参，也就是手动创建的 User。</p>
+<p>其他 <code>Mockito</code> 的使用参见文档 <a target="_blank" rel="noopener" href="https://www.javadoc.io/doc/org.mockito/mockito-core/3.8.0/org/mockito/Mockito.html">Mockito version 3.8.0</a><br>– 在 <code>Spring Boot 2.5.14</code> 版本中，<code>mockito-core</code> 的版本是 <code>3.9.0</code>，官网没有这个版本的文档。</p>
+<h3 id="用-Mock-注解来-mock-依赖"><a href="#用-Mock-注解来-mock-依赖" class="headerlink" title="用 @Mock 注解来 mock 依赖"></a>用 <code>@Mock</code> 注解来 mock 依赖</h3><p>另一种方式是使用 <code>@Mock</code> 注解结合 JUnit 的 <code>@MockitoExtension</code> 来创建 mock 依赖：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ExtendWith(MockitoExtension.class)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RegisterUseCaseTest</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Mock</span></span><br><span class="line">  <span class="keyword">private</span> UserRepository userRepository;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> RegisterUseCase registerUseCase;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@BeforeEach</span></span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">initUseCase</span><span class="params">()</span> &#123;</span><br><span class="line">    registerUseCase = <span class="keyword">new</span> <span class="title class_">RegisterUseCase</span>(userRepository);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Test</span></span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">savedUserHasRegistrationDate</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>@Mock</code> 注解指定哪那些变量需要 mock，<code>@MockitoExtension</code> 告诉 Junit 需要用 Mockito 框架来创建这些变量。这样做和手动调用 <code>Mockito.mock()</code> 基本一致，只是 <code>@MockitoExtension</code> 将测试绑定到了测试框架上。</p>
+<p>除了手动创建 <code>RegisterUseCase</code> 之外，我们也可以用 <code>@InjectMocks</code> 注解来创建 <code>registerUseCase</code> 变量。Mockito 会通过一个<a target="_blank" rel="noopener" href="https://www.javadoc.io/doc/org.mockito/mockito-core/3.8.0/org/mockito/InjectMocks.html">特殊机制</a>帮我们创建变量。</p>
+<h2 id="使用可读易读的-Assertion"><a href="#使用可读易读的-Assertion" class="headerlink" title="使用可读易读的 Assertion"></a>使用可读易读的 Assertion</h2><p><code>Spring Boot</code> 提供了 <a target="_blank" rel="noopener" href="http://joel-costigliola.github.io/assertj/">AssertJ</a>，我们在上文中已经使用了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">assertThat(savedUser.getRegistrationDate()).isNotNull();</span><br></pre></td></tr></table></figure>
+<p>… 这个部分看原文吧，感觉做修改用处没那么大 …</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>在测试中引入整个 Spring 环境是有意义的，但是对于单纯的单元测试来说不太必要，甚至长时间、周期性的环境构建时间没有什么好处。<br>通过一些手段创建易于进行单元测试的类是很有必要的。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/thombergs/code-examples/tree/master/spring-boot/spring-boot-testing">源码</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/translate/" rel="tag"># translate</a>
+              <a href="/tags/Spring-Boot/" rel="tag"># Spring Boot</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/08/a-windows-JAVA-HOME-problem/" rel="prev" title="一个 Windows 下 JAVA_HOME 设置不生效的问题">
+                  <i class="fa fa-chevron-left"></i> 一个 Windows 下 JAVA_HOME 设置不生效的问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/10/home-server/" rel="next" title="家里网络环境/下载机">
+                  家里网络环境/下载机 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-gamepad"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jinuxx</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
