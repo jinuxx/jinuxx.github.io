@@ -87,3 +87,21 @@ category=$5
        guest ok = yes
        browseable = yes
 ```
+
+
+## mdadm
+1. create raid 0
+   `mdadm --create --verbose /dev/md0 --level=0 --raid-devices=2 /dev/sdb1 /dev/sdc1`
+2. create filesystem
+   `mkfs.ext4 /dev/md0`
+3. auto mount `vim /etc/fstab`
+   `UUID=d160dd45-bf3c-4953-83c2-5093192cad7d /tank           ext4    defaults        0       2`
+4. Persist the array configuration to mdadm.conf
+   `mdadm --detail --scan --verbose | sudo tee -a /etc/mdadm/mdadm.conf`
+
+delete a mdadm
+1. `umount /dev/md0`
+2. `mdadm --stop /dev/md0`
+3. `mdadm --misc --zero-superblock /dev/sd[?]`
+4. `rm -rf /etc/mdadm/mdadm.conf`
+5. 清除 `/etc/fstab` 中挂载的部分
