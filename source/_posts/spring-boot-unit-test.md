@@ -70,9 +70,9 @@ public class RegisterUseCase {
   }
 }
 ```
-以上代码使用了 [构造器注入](https://reflectoring.io/constructor-injection/) 进行依赖注入，在创建上下文环境时 Spring 会自动实例化一个`UserRepository`，在 Spring5之前，还是需要添加 `@Autowired` 让 Spring 找到构造器。
+以上代码使用了 [构造器注入](https://reflectoring.io/constructor-injection/) 进行依赖注入，在创建上下文环境时 Spring 会自动实例化一个`UserRepository`，在 Spring5 之前，还是需要添加 `@Autowired` 让 Spring 找到构造器。
 
-同时，`UserRepository` 现在也是 `final` 的了，因为在整个 Spring 的生命周期里，这个实例不会再变化，同事也避免了一些其他错误。
+同时，`UserRepository` 现在也是 `final` 的了，因为在整个 Spring 的生命周期里，这个实例不会再变化，同时也避免了一些其他错误。
 
 ### 减少模板重复代码
 充分利用 `Lombok` 的 [`@RequiredArgsConstructor`](https://projectlombok.org/features/constructor) 自动生成构造器：
