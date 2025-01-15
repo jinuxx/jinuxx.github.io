@@ -1,8 +1,12 @@
 ---
-title: About what?
+title: The Masterplan
 date: 2021-07-20 14:26:50
 type: "about"
 ---
 
-__Me?  
-__Nah, I\'m just a coder living to fight another day.
+> ***Life on the other hand***  
+> ***Won't make us understand***  
+> ***We're all part of a masterplan***  
+
+> ***I’d like to be under the sea***  
+> ***In an octopus’s garden in the shade***
