@@ -21,7 +21,7 @@ tags:
 ```yml
 spring:
   datasource:
-    url: jdbc:h2:mem:test # 内存内数据库
+    url: jdbc:h2:mem:<dbname> # 内存内数据库
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -29,8 +29,11 @@ spring:
     schema: classpath:db/schema.sql
     data: classpath:db/data.sql
 ```
+H2连接区别 [Database URL Overview](http://www.h2database.com/html/features.html#database_url)
+
 ### 添加初始化库的sql
-如上一步的配置中，好像需要写明schema才会去创建库表：
+
+如上一步的配置中，写明schema创建库表：
 ```sql
 -- classpath:db/schema.sql
 DROP TABLE IF EXISTS billionaires;
@@ -42,7 +45,9 @@ CREATE TABLE billionaires
     last_name  VARCHAR(250) NOT NULL,
     career     VARCHAR(250) DEFAULT NULL
 );
+```
 
+```sql
 -- classpath:db/data.sql
 INSERT INTO billionaires (first_name, last_name, career)
 VALUES ('Aliko', 'Dangote', 'Billionaire Industrialist'),
@@ -50,6 +55,6 @@ VALUES ('Aliko', 'Dangote', 'Billionaire Industrialist'),
        ('Folrunsho', 'Alakija', 'Billionaire Oil Magnate');
 ```
 
-配置完成，之后的开发和正常连接数据库相同，需要注意每次停止项目后，所有的数据库改动都会丢失。
+配置完成，之后的开发和正常连接数据库相同。
 
-TODO: 持久化
+如果使用的是 `mem` 的内存数据库，每次项目启动都会进行初始化。

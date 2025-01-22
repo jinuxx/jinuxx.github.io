@@ -7,7 +7,20 @@ tags:
 ---
 
 ## docker
-### [安装](https://docs.docker.com/install/linux/docker-ce/centos/)
+### [官网安装](https://docs.docker.com/install/linux/docker-ce/centos/) [中科大镜像安装](https://mirrors.ustc.edu.cn/help/docker-ce.html)
+
+
+
+#### 自动安装
+
+```sh
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo DOWNLOAD_URL=https://mirrors.ustc.edu.cn/docker-ce sh get-docker.sh
+```
+
+
+
+#### 手动安装
 
 1. 卸载旧版本
 ```sh
@@ -21,6 +34,7 @@ sudo yum remove docker \
                 docker-engine
 ```
 <!-- more -->
+
 2. 安装必要依赖
 ```sh
 sudo yum install -y yum-utils device-mapper-persistent-data lvm2
@@ -48,7 +62,12 @@ sudo yum install docker-ce docker-ce-cli containerd.io
 sudo systemctl start docker
 ```
 
-### 配置国内镜像源
+
+### 镜像下载加速
+<details>
+  <summary> 镜像源基本都由于种种原因过期 </summary>
+
+
 1. 加速地址（不能保证还能使用）
 | 源     | 地址                                          |
 | ------ | --------------------------------------------- |
@@ -77,7 +96,20 @@ sudo systemctl daemon-reload
 sudo systemctl restart docker
 ```
 
+</details>  
+
+
+
+使用毫秒镜像：[官网](https://1ms.run/)
+
+```sh
+docker pull docker.1ms.run/nginx:latest
+```
+
+> 这里的 `nginx:latest` 的请替换成你需要的镜像和版本
+
 ### 开启 http 端口管理
+
 1. 编辑docker宿主机文件 `/lib/systemd/system/docker.service`
 ```
 sudo vi /lib/systemd/system/docker.service
